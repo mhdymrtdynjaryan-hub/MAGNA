@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MΛGИΛ</title>
+
+<style>
+:root{
+  --neon:#00eaff;
+  --bg1: linear-gradient(135deg,#000000,#001f2a);
+  --bg2: linear-gradient(135deg,#000000,#002b3d);
+  --bg3: linear-gradient(135deg,#000000,#003f5c);
+}
+
+*{box-sizing:border-box}
+
+body{
+  margin:0;
+  min-height:100vh;
+  font-family: Arial, Helvetica, sans-serif;
+  background: var(--bg1);
+  color: var(--neon);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.app{
+  width:100%;
+  max-width:420px;
+  margin:20px;
+  background: rgba(0,0,0,0.7);
+  border-radius:22px;
+  box-shadow:0 0 40px rgba(0,234,255,0.5);
+  padding:20px;
+  animation: glow 3s infinite alternate;
+}
+
+@keyframes glow{
+  from{box-shadow:0 0 20px rgba(0,234,255,0.3)}
+  to{box-shadow:0 0 45px rgba(0,234,255,0.8)}
+}
+
+h1{
+  text-align:center;
+  letter-spacing:6px;
+  margin:10px 0;
+}
+
+.subtitle{
+  text-align:center;
+  opacity:0.7;
+  font-size:0.9em;
+}
+
+.section{margin-top:20px}
+
+textarea, input{
+  width:100%;
+  background:#000;
+  color:var(--neon);
+  border:1px solid var(--neon);
+  border-radius:12px;
+  padding:10px;
+  margin-top:8px;
+}
+
+textarea{min-height:80px}
+
+button{
+  margin-top:10px;
+  background:transparent;
+  color:var(--neon);
+  border:1px solid var(--neon);
+  border-radius:12px;
+  padding:8px 14px;
+  cursor:pointer;
+}
+
+button:hover{
+  background:var(--neon);
+  color:#000;
+}
+
+.row{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  justify-content:center;
+}
+
+.note{
+  margin-top:10px;
+  padding:10px;
+  border:1px dashed var(--neon);
+  border-radius:12px;
+}
+
+.timeline{
+  font-size:0.8em;
+  opacity:0.85;
+  margin-top:5px;
+}
+
+.hidden{display:none}
+
+.footer{
+  text-align:center;
+  margin-top:20px;
+  font-size:0.7em;
+  opacity:0.6;
+}
+</style>
+</head>
+
+<body>
+<div class="app">
+
+<h1>MΛGИΛ</h1>
+<div class="subtitle" id="subtitle">
+Your personal space. View only for others.
+</div>
+
+<!-- PASSWORD -->
+<div class="section" id="lockSection">
+  <input id="password" type="password" placeholder="Enter password">
+  <button onclick="unlock()">Unlock Edit Mode</button>
+</div>
+
+<!-- CONTENT -->
+<div class="section hidden" id="editor">
+
+<select id="type">
+  <option value="Note">Note</option>
+  <option value="Idea">Idea</option>
+  <option value="Link">Link</option>
+</select>
+
+<textarea id="content" placeholder="Write here..."></textarea>
+<button onclick="save()">Save</button>
+
+</div>
+
+<!-- LANGUAGE -->
+<div class="section">
+  <div class="row">
+    <button onclick="setLang('en')">English</button>
+    <button onclick="setLang('fa')">Finglish</button>
+  </div>
+</div>
+
+<!-- THEMES -->
+<div class="section">
+  <div class="row">
+    <button onclick="setTheme(1)">Theme 1</button>
+    <button onclick="setTheme(2)">Theme 2</button>
+    <button onclick="setTheme(3)">Theme 3</button>
+  </div>
+</div>
+
+<!-- TIMELINE -->
+<div class="section">
+  <div id="list"></div>
+</div>
+
+<div class="footer">
+MAGNA • neon • locked • personal
+</div>
+
+</div>
+
+<script>
+const PASS="magna";
+let data=JSON.parse(localStorage.getItem("magna_data")||"[]");
+
+function unlock(){
+  if(document.getElementById("password").value===PASS){
+    document.getElementById("editor").classList.remove("hidden");
+    document.getElementById("lockSection").classList.add("hidden");
+  }else alert("Wrong password");
+}
+
+function save(){
+  const text=document.getElementById("content").value;
+  if(!text) return;
+  data.unshift({
+    type:document.getElementById("type").value,
+    text,
+    time:new Date().toLocaleString()
+  });
+  localStorage.setItem("magna_data",JSON.stringify(data));
+  document.getElementById("content").value="";
+  render();
+}
+
+function render(){
+  const list=document.getElementById("list");
+  list.innerHTML="";
+  data.forEach(i=>{
+    list.innerHTML+=`
+    <div class="note">
+      <b>${i.type}</b>: ${i.text}
+      <div class="timeline">${i.time}</div>
+    </div>`;
+  });
+}
+render();
+
+function setLang(l){
+  if(l==="fa"){
+    subtitle.innerText="Inja fazaye shakhsiye to-e. Faghat to edit mikoni.";
+    content.placeholder="Ha
