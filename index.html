@@ -32,7 +32,7 @@ body{
   margin:20px;
   background: rgba(0,0,0,0.7);
   border-radius:22px;
-  box-shadow:0 0 40px rgba(0,234,255,0.5);
+  box-shadow:0 0 40px rgba(0,234,255,0.6);
   padding:20px;
   animation: glow 3s infinite alternate;
 }
@@ -50,13 +50,13 @@ h1{
 
 .subtitle{
   text-align:center;
-  opacity:0.7;
+  opacity:0.75;
   font-size:0.9em;
 }
 
 .section{margin-top:20px}
 
-textarea, input{
+textarea, input, select{
   width:100%;
   background:#000;
   color:var(--neon);
@@ -70,11 +70,12 @@ textarea{min-height:80px}
 
 button{
   margin-top:10px;
+  width:100%;
   background:transparent;
   color:var(--neon);
   border:1px solid var(--neon);
   border-radius:12px;
-  padding:8px 14px;
+  padding:10px;
   cursor:pointer;
 }
 
@@ -86,8 +87,6 @@ button:hover{
 .row{
   display:flex;
   gap:10px;
-  flex-wrap:wrap;
-  justify-content:center;
 }
 
 .note{
@@ -97,10 +96,10 @@ button:hover{
   border-radius:12px;
 }
 
-.timeline{
-  font-size:0.8em;
-  opacity:0.85;
-  margin-top:5px;
+.time{
+  font-size:0.75em;
+  opacity:0.6;
+  margin-top:4px;
 }
 
 .hidden{display:none}
@@ -122,24 +121,22 @@ button:hover{
 Your personal space. View only for others.
 </div>
 
-<!-- PASSWORD -->
+<!-- LOCK -->
 <div class="section" id="lockSection">
   <input id="password" type="password" placeholder="Enter password">
   <button onclick="unlock()">Unlock Edit Mode</button>
 </div>
 
-<!-- CONTENT -->
+<!-- EDITOR -->
 <div class="section hidden" id="editor">
+  <select id="type">
+    <option value="Note">Note</option>
+    <option value="Idea">Idea</option>
+    <option value="Link">Link</option>
+  </select>
 
-<select id="type">
-  <option value="Note">Note</option>
-  <option value="Idea">Idea</option>
-  <option value="Link">Link</option>
-</select>
-
-<textarea id="content" placeholder="Write here..."></textarea>
-<button onclick="save()">Save</button>
-
+  <textarea id="content" placeholder="Write here..."></textarea>
+  <button onclick="saveItem()">Save</button>
 </div>
 
 <!-- LANGUAGE -->
@@ -159,55 +156,80 @@ Your personal space. View only for others.
   </div>
 </div>
 
-<!-- TIMELINE -->
-<div class="section">
-  <div id="list"></div>
-</div>
+<!-- LIST -->
+<div class="section" id="list"></div>
 
 <div class="footer">
-MAGNA • neon • locked • personal
+MAGNA • personal • neon
 </div>
 
 </div>
 
 <script>
-const PASS="magna";
-let data=JSON.parse(localStorage.getItem("magna_data")||"[]");
+const PASS = "magna";
+let data = JSON.parse(localStorage.getItem("magna_data") || "[]");
 
 function unlock(){
-  if(document.getElementById("password").value===PASS){
+  const val = document.getElementById("password").value;
+  if(val === PASS){
     document.getElementById("editor").classList.remove("hidden");
     document.getElementById("lockSection").classList.add("hidden");
-  }else alert("Wrong password");
+  }else{
+    alert("Wrong password");
+  }
 }
 
-function save(){
-  const text=document.getElementById("content").value;
+function saveItem(){
+  const text = document.getElementById("content").value.trim();
   if(!text) return;
+
   data.unshift({
-    type:document.getElementById("type").value,
-    text,
-    time:new Date().toLocaleString()
+    type: document.getElementById("type").value,
+    text: text,
+    time: new Date().toLocaleString()
   });
-  localStorage.setItem("magna_data",JSON.stringify(data));
-  document.getElementById("content").value="";
+
+  localStorage.setItem("magna_data", JSON.stringify(data));
+  document.getElementById("content").value = "";
   render();
 }
 
 function render(){
-  const list=document.getElementById("list");
-  list.innerHTML="";
-  data.forEach(i=>{
-    list.innerHTML+=`
-    <div class="note">
-      <b>${i.type}</b>: ${i.text}
-      <div class="timeline">${i.time}</div>
-    </div>`;
+  const list = document.getElementById("list");
+  list.innerHTML = "";
+  data.forEach(item=>{
+    const div = document.createElement("div");
+    div.className = "note";
+    div.innerHTML = "<b>"+item.type+"</b><br>"+item.text+
+      "<div class='time'>"+item.time+"</div>";
+    list.appendChild(div);
   });
 }
 render();
 
 function setLang(l){
-  if(l==="fa"){
-    subtitle.innerText="Inja fazaye shakhsiye to-e. Faghat to edit mikoni.";
-    content.placeholder="Ha
+  const subtitleEl = document.getElementById("subtitle");
+  const contentEl = document.getElementById("content");
+
+  if(l === "fa"){
+    subtitleEl.innerText =
+      "Inja fazaye shakhsiye to-e. Faghat to mitooni edit koni.";
+    contentEl.placeholder =
+      "Har chi mikhay benevis...";
+  }else{
+    subtitleEl.innerText =
+      "Your personal space. View only for others.";
+    contentEl.placeholder =
+      "Write here...";
+  }
+}
+
+function setTheme(n){
+  if(n===1) document.body.style.background="var(--bg1)";
+  if(n===2) document.body.style.background="var(--bg2)";
+  if(n===3) document.body.style.background="var(--bg3)";
+}
+</script>
+
+</body>
+</html>
