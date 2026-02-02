@@ -30,7 +30,7 @@ body{
   width:100%;
   max-width:420px;
   margin:20px;
-  background: rgba(0,0,0,0.7);
+  background: rgba(0,0,0,0.78);
   border-radius:22px;
   box-shadow:0 0 40px rgba(0,234,255,0.6);
   padding:20px;
@@ -54,47 +54,37 @@ h1{
   font-size:0.9em;
 }
 
-.section{margin-top:20px}
-
-textarea, input, select{
-  width:100%;
-  background:#000;
-  color:var(--neon);
-  border:1px solid var(--neon);
-  border-radius:12px;
-  padding:10px;
-  margin-top:8px;
+.tabs{
+  display:flex;
+  gap:8px;
+  margin-top:20px;
 }
 
-textarea{min-height:80px}
-
-button{
-  margin-top:10px;
-  width:100%;
-  background:transparent;
-  color:var(--neon);
+.tab{
+  flex:1;
+  padding:8px;
+  text-align:center;
   border:1px solid var(--neon);
   border-radius:12px;
-  padding:10px;
   cursor:pointer;
 }
 
-button:hover{
+.tab.active{
   background:var(--neon);
   color:#000;
 }
 
-.row{
-  display:flex;
-  gap:10px;
-}
+.section{display:none;margin-top:15px}
+.section.active{display:block}
 
 .note{
-  margin-top:10px;
-  padding:10px;
+  margin-top:12px;
+  padding:12px;
   border:1px dashed var(--neon);
   border-radius:12px;
 }
+
+.type{font-weight:bold}
 
 .time{
   font-size:0.75em;
@@ -102,7 +92,36 @@ button:hover{
   margin-top:4px;
 }
 
-.hidden{display:none}
+img, video, iframe{
+  width:100%;
+  border-radius:12px;
+  margin-top:8px;
+}
+
+.hidden-box{
+  margin-top:12px;
+  border:1px dashed var(--neon);
+  border-radius:12px;
+  padding:10px;
+}
+
+.hidden-content{display:none;margin-top:8px}
+
+button{
+  width:100%;
+  padding:8px;
+  margin-top:8px;
+  background:transparent;
+  color:var(--neon);
+  border:1px solid var(--neon);
+  border-radius:12px;
+  cursor:pointer;
+}
+
+button:hover{
+  background:var(--neon);
+  color:#000;
+}
 
 .footer{
   text-align:center;
@@ -118,110 +137,101 @@ button:hover{
 
 <h1>MΛGИΛ</h1>
 <div class="subtitle" id="subtitle">
-Your personal space. View only for others.
+Your personal space. View only.
 </div>
 
-<!-- LOCK -->
-<div class="section" id="lockSection">
-  <input id="password" type="password" placeholder="Enter password">
-  <button onclick="unlock()">Unlock Edit Mode</button>
+<!-- TABS -->
+<div class="tabs">
+  <div class="tab active" onclick="openTab('notes')">Notes</div>
+  <div class="tab" onclick="openTab('ideas')">Ideas</div>
+  <div class="tab" onclick="openTab('links')">Links</div>
 </div>
 
-<!-- EDITOR -->
-<div class="section hidden" id="editor">
-  <select id="type">
-    <option value="Note">Note</option>
-    <option value="Idea">Idea</option>
-    <option value="Link">Link</option>
-  </select>
+<!-- NOTES -->
+<div id="notes" class="section active">
+  <div class="note">
+    <div class="type">Note</div>
+    This is MAGNA. Public viewer mode.
+    <div class="time">2026</div>
+  </div>
 
-  <textarea id="content" placeholder="Write here..."></textarea>
-  <button onclick="saveItem()">Save</button>
-</div>
+  <div class="note">
+    <div class="type">Image</div>
+    <img src="https://picsum.photos/400/250" alt="">
+  </div>
 
-<!-- LANGUAGE -->
-<div class="section">
-  <div class="row">
-    <button onclick="setLang('en')">English</button>
-    <button onclick="setLang('fa')">Finglish</button>
+  <div class="hidden-box">
+    <button onclick="toggleHidden()">Open hidden text</button>
+    <div class="hidden-content" id="hiddenText">
+      This text is hidden. Only curious minds find it 😈
+    </div>
   </div>
 </div>
 
-<!-- THEMES -->
-<div class="section">
-  <div class="row">
-    <button onclick="setTheme(1)">Theme 1</button>
-    <button onclick="setTheme(2)">Theme 2</button>
-    <button onclick="setTheme(3)">Theme 3</button>
+<!-- IDEAS -->
+<div id="ideas" class="section">
+  <div class="note">
+    <div class="type">Idea</div>
+    Minimal • Neon • Personal
+  </div>
+
+  <div class="note">
+    <div class="type">Video</div>
+    <video controls>
+      <source src="https://www.w3schools.com/html/mov_bbb.mp4">
+    </video>
   </div>
 </div>
 
-<!-- LIST -->
-<div class="section" id="list"></div>
+<!-- LINKS -->
+<div id="links" class="section">
+  <div class="note">
+    <div class="type">Website</div>
+    <a href="https://mhdymrtdynjaryan-hub.github.io/MAGNA/" target="_blank">
+      MAGNA Live
+    </a>
+  </div>
+
+  <div class="note">
+    <div class="type">YouTube</div>
+    <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ"
+      allowfullscreen></iframe>
+  </div>
+</div>
+
+<!-- CONTROLS -->
+<div class="section active">
+  <button onclick="setLang('en')">English</button>
+  <button onclick="setLang('fa')">Finglish</button>
+  <button onclick="setTheme(1)">Theme 1</button>
+  <button onclick="setTheme(2)">Theme 2</button>
+  <button onclick="setTheme(3)">Theme 3</button>
+</div>
 
 <div class="footer">
-MAGNA • personal • neon
+MAGNA • ultimate viewer • neon
 </div>
 
 </div>
 
 <script>
-const PASS = "magna";
-let data = JSON.parse(localStorage.getItem("magna_data") || "[]");
-
-function unlock(){
-  const val = document.getElementById("password").value;
-  if(val === PASS){
-    document.getElementById("editor").classList.remove("hidden");
-    document.getElementById("lockSection").classList.add("hidden");
-  }else{
-    alert("Wrong password");
-  }
+function openTab(id){
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  event.target.classList.add('active');
 }
 
-function saveItem(){
-  const text = document.getElementById("content").value.trim();
-  if(!text) return;
-
-  data.unshift({
-    type: document.getElementById("type").value,
-    text: text,
-    time: new Date().toLocaleString()
-  });
-
-  localStorage.setItem("magna_data", JSON.stringify(data));
-  document.getElementById("content").value = "";
-  render();
+function toggleHidden(){
+  const el=document.getElementById("hiddenText");
+  el.style.display = el.style.display==="block" ? "none" : "block";
 }
-
-function render(){
-  const list = document.getElementById("list");
-  list.innerHTML = "";
-  data.forEach(item=>{
-    const div = document.createElement("div");
-    div.className = "note";
-    div.innerHTML = "<b>"+item.type+"</b><br>"+item.text+
-      "<div class='time'>"+item.time+"</div>";
-    list.appendChild(div);
-  });
-}
-render();
 
 function setLang(l){
-  const subtitleEl = document.getElementById("subtitle");
-  const contentEl = document.getElementById("content");
-
-  if(l === "fa"){
-    subtitleEl.innerText =
-      "Inja fazaye shakhsiye to-e. Faghat to mitooni edit koni.";
-    contentEl.placeholder =
-      "Har chi mikhay benevis...";
-  }else{
-    subtitleEl.innerText =
-      "Your personal space. View only for others.";
-    contentEl.placeholder =
-      "Write here...";
-  }
+  const s=document.getElementById("subtitle");
+  s.innerText = l==="fa"
+    ? "Inja fazaye shakhsiye to-e. Faghat namayesh."
+    : "Your personal space. View only.";
 }
 
 function setTheme(n){
