@@ -8,9 +8,7 @@
 <style>
 :root{
   --neon:#00eaff;
-  --bg1: linear-gradient(135deg,#000000,#001f2a);
-  --bg2: linear-gradient(135deg,#000000,#002b3d);
-  --bg3: linear-gradient(135deg,#000000,#003f5c);
+  --bg: linear-gradient(135deg,#000,#001f2a);
 }
 
 *{box-sizing:border-box}
@@ -19,10 +17,9 @@ body{
   margin:0;
   min-height:100vh;
   font-family: Arial, Helvetica, sans-serif;
-  background: var(--bg1);
-  color: var(--neon);
+  background:var(--bg);
+  color:var(--neon);
   display:flex;
-  align-items:center;
   justify-content:center;
 }
 
@@ -30,16 +27,10 @@ body{
   width:100%;
   max-width:420px;
   margin:20px;
-  background: rgba(0,0,0,0.78);
-  border-radius:22px;
-  box-shadow:0 0 40px rgba(0,234,255,0.6);
   padding:20px;
-  animation: glow 3s infinite alternate;
-}
-
-@keyframes glow{
-  from{box-shadow:0 0 20px rgba(0,234,255,0.3)}
-  to{box-shadow:0 0 45px rgba(0,234,255,0.8)}
+  background:rgba(0,0,0,0.8);
+  border-radius:22px;
+  box-shadow:0 0 35px rgba(0,234,255,0.6);
 }
 
 h1{
@@ -50,84 +41,42 @@ h1{
 
 .subtitle{
   text-align:center;
-  opacity:0.75;
-  font-size:0.9em;
+  opacity:.7;
+  font-size:.85em;
 }
-
-.tabs{
-  display:flex;
-  gap:8px;
-  margin-top:20px;
-}
-
-.tab{
-  flex:1;
-  padding:8px;
-  text-align:center;
-  border:1px solid var(--neon);
-  border-radius:12px;
-  cursor:pointer;
-}
-
-.tab.active{
-  background:var(--neon);
-  color:#000;
-}
-
-.section{display:none;margin-top:15px}
-.section.active{display:block}
 
 .note{
-  margin-top:12px;
-  padding:12px;
+  margin-top:15px;
+  padding:14px;
   border:1px dashed var(--neon);
-  border-radius:12px;
+  border-radius:14px;
 }
 
-.type{font-weight:bold}
+.type{
+  font-size:.75em;
+  opacity:.6;
+  margin-bottom:4px;
+}
 
 .time{
-  font-size:0.75em;
-  opacity:0.6;
-  margin-top:4px;
+  font-size:.7em;
+  opacity:.5;
+  margin-top:6px;
 }
 
-img, video, iframe{
+img, video{
   width:100%;
   border-radius:12px;
   margin-top:8px;
 }
 
-.hidden-box{
-  margin-top:12px;
-  border:1px dashed var(--neon);
-  border-radius:12px;
-  padding:10px;
-}
-
-.hidden-content{display:none;margin-top:8px}
-
-button{
-  width:100%;
-  padding:8px;
-  margin-top:8px;
-  background:transparent;
-  color:var(--neon);
-  border:1px solid var(--neon);
-  border-radius:12px;
-  cursor:pointer;
-}
-
-button:hover{
-  background:var(--neon);
-  color:#000;
-}
+a{color:var(--neon)}
 
 .footer{
   text-align:center;
   margin-top:20px;
-  font-size:0.7em;
-  opacity:0.6;
+  font-size:.7em;
+  opacity:.5;
 }
 </style>
 </head>
@@ -136,109 +85,70 @@ button:hover{
 <div class="app">
 
 <h1>MΛGИΛ</h1>
-<div class="subtitle" id="subtitle">
-Your personal space. View only.
+<div class="subtitle">
+Personal public timeline
 </div>
 
-<!-- TABS -->
-<div class="tabs">
-  <div class="tab active" onclick="openTab('notes')">Notes</div>
-  <div class="tab" onclick="openTab('ideas')">Ideas</div>
-  <div class="tab" onclick="openTab('links')">Links</div>
-</div>
-
-<!-- NOTES -->
-<div id="notes" class="section active">
-  <div class="note">
-    <div class="type">Note</div>
-    This is MAGNA. Public viewer mode.
-    <div class="time">2026</div>
-  </div>
-
-  <div class="note">
-    <div class="type">Image</div>
-    <img src="https://picsum.photos/400/250" alt="">
-  </div>
-
-  <div class="hidden-box">
-    <button onclick="toggleHidden()">Open hidden text</button>
-    <div class="hidden-content" id="hiddenText">
-      This text is hidden. Only curious minds find it 😈
-    </div>
-  </div>
-</div>
-
-<!-- IDEAS -->
-<div id="ideas" class="section">
-  <div class="note">
-    <div class="type">Idea</div>
-    Minimal • Neon • Personal
-  </div>
-
-  <div class="note">
-    <div class="type">Video</div>
-    <video controls>
-      <source src="https://www.w3schools.com/html/mov_bbb.mp4">
-    </video>
-  </div>
-</div>
-
-<!-- LINKS -->
-<div id="links" class="section">
-  <div class="note">
-    <div class="type">Website</div>
-    <a href="https://mhdymrtdynjaryan-hub.github.io/MAGNA/" target="_blank">
-      MAGNA Live
-    </a>
-  </div>
-
-  <div class="note">
-    <div class="type">YouTube</div>
-    <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ"
-      allowfullscreen></iframe>
-  </div>
-</div>
-
-<!-- CONTROLS -->
-<div class="section active">
-  <button onclick="setLang('en')">English</button>
-  <button onclick="setLang('fa')">Finglish</button>
-  <button onclick="setTheme(1)">Theme 1</button>
-  <button onclick="setTheme(2)">Theme 2</button>
-  <button onclick="setTheme(3)">Theme 3</button>
-</div>
+<!-- CONTENT -->
+<div id="notes"></div>
 
 <div class="footer">
-MAGNA • ultimate viewer • neon
+MAGNA • neon viewer
 </div>
 
 </div>
 
+<!-- DATA -->
+<script src="data.js"></script>
+
+<!-- RENDER -->
 <script>
-function openTab(id){
-  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
-  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
-  event.target.classList.add('active');
-}
+const container = document.getElementById("notes");
 
-function toggleHidden(){
-  const el=document.getElementById("hiddenText");
-  el.style.display = el.style.display==="block" ? "none" : "block";
-}
+MAGNA_DATA.forEach(item=>{
+  const box = document.createElement("div");
+  box.className = "note";
 
-function setLang(l){
-  const s=document.getElementById("subtitle");
-  s.innerText = l==="fa"
-    ? "Inja fazaye shakhsiye to-e. Faghat namayesh."
-    : "Your personal space. View only.";
-}
+  if(item.type==="note"){
+    box.innerHTML = `
+      <div class="type">NOTE</div>
+      <b>${item.title}</b><br>
+      ${item.content}
+      <div class="time">${item.date}</div>
+    `;
+  }
 
-function setTheme(n){
-  if(n===1) document.body.style.background="var(--bg1)";
-  if(n===2) document.body.style.background="var(--bg2)";
-  if(n===3) document.body.style.background="var(--bg3)";
-}
+  if(item.type==="image"){
+    box.innerHTML = `
+      <div class="type">IMAGE</div>
+      <b>${item.title}</b>
+      <img src="${item.src}">
+      <div class="time">${item.caption || ""}</div>
+    `;
+  }
+
+  if(item.type==="video"){
+    box.innerHTML = `
+      <div class="type">VIDEO</div>
+      <b>${item.title}</b>
+      <video controls>
+        <source src="${item.src}">
+      </video>
+    `;
+  }
+
+  if(item.type==="link"){
+    box.innerHTML = `
+      <div class="type">LINK</div>
+      <b>${item.title}</b><br>
+      <a href="${item.url}" target="_blank">
+        ${item.caption || item.url}
+      </a>
+    `;
+  }
+
+  container.appendChild(box);
+});
 </script>
 
 </body>
